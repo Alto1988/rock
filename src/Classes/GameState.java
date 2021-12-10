@@ -10,7 +10,7 @@ import java.util.Scanner;
 
 public class GameState implements IGameState {
 
-    private static ArrayList<String> Choices = new ArrayList<String>(Arrays.asList("rock", "paper", "scissors"));
+    private final ArrayList<String> Choices = new ArrayList<String>(Arrays.asList("rock", "paper", "scissors"));
     private Player playerOne = new Player();
     private Player playerTwo = new Player();
 
@@ -79,7 +79,7 @@ public class GameState implements IGameState {
 
         }
     }
-    public void startGame() {
+    public void startGame() throws InterruptedException {
         boolean gameOver = false;
         boolean choiceIsValid = false;
         Scanner howManyPlayers = new Scanner(System.in);
@@ -111,16 +111,18 @@ public class GameState implements IGameState {
                         Scanner scanner = new Scanner(System.in);
                         System.out.println("Player 1, please enter your choice: ");
                         String playerOneChoice = scanner.nextLine().toLowerCase();
-                        if(!Choices.contains(playerOneChoice)){
-                            System.out.println("!!!!!!ENTER A VALID CHOICE!!!!!!");
-                        }
                         System.out.println("Player 2, please enter your choice: ");
                         String playerTwoChoice = scanner.nextLine().toLowerCase();
-                        if(!Choices.contains(playerTwoChoice)){
-                            System.out.println("!!!!!!ENTER A VALID CHOICE!!!!!!");
+                        System.out.println("\033[H\033[2J");
+                        System.out.flush();
+                        try {
+                            if(Choices.contains(playerOneChoice) && Choices.contains(playerTwoChoice)){
+
+                                gameRockPaperScissorsLogic(playerOne, playerTwo,playerOneChoice, playerTwoChoice);
+                            }
+                        }catch (Exception e){
+                            System.out.println("Choices were invalid");
                         }
-                        gameRockPaperScissorsLogic(playerOne, playerTwo, playerOneChoice, playerTwoChoice);
-                        //We start the game
                     }else if(startMenuChoice.equals(MenuChoices.history.toString())){
                         //display the history of the game
                         System.out.println("==========================================================");
