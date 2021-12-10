@@ -2,7 +2,10 @@ package Classes;
 
 import Classes.MenuChoices;
 import Interfaces.IGameState;
+import com.sun.tools.javac.Main;
 
+import javax.sound.sampled.*;
+import java.io.*;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Locale;
@@ -79,7 +82,9 @@ public class GameState implements IGameState {
 
         }
     }
-    public void startGame() throws InterruptedException {
+    public void startGame() throws InterruptedException, IOException, UnsupportedAudioFileException {
+        String soundFileOne = "src/sounds/fireball.wav";
+        String soundFileTwo = "src/sounds/fireworks.wav";
         boolean gameOver = false;
         boolean choiceIsValid = false;
         Scanner howManyPlayers = new Scanner(System.in);
@@ -111,11 +116,13 @@ public class GameState implements IGameState {
                         Scanner scanner = new Scanner(System.in);
                         System.out.println("Player 1, please enter your choice: ");
                         String playerOneChoice = scanner.nextLine().toLowerCase();
+                        playSound(soundFileOne);
                         System.out.println("\033[H\033[2J");
                         System.out.flush();
                         Thread.sleep(1000);
                         System.out.println("Player 2, please enter your choice: ");
                         String playerTwoChoice = scanner.nextLine().toLowerCase();
+                        playSound(soundFileTwo);
                         try {
                             if(Choices.contains(playerOneChoice) && Choices.contains(playerTwoChoice)){
 
@@ -150,6 +157,25 @@ public class GameState implements IGameState {
             }
         }
 
+    }
+    public static synchronized void playSound(final String soundFile){
+        new Thread(new Runnable() {
+            File file = new File(soundFile);
+            public void run() {
+                try {
+                    AudioInputStream audioInputStream = AudioSystem.getAudioInputStream(file);
+                    Clip clip = AudioSystem.getClip();
+                    clip.open(audioInputStream);
+                    clip.start();
+                } catch (LineUnavailableException e) {
+                    e.printStackTrace();
+                } catch (UnsupportedAudioFileException e) {
+                    e.printStackTrace();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
+        }).start();
     }
 }
 

@@ -2,6 +2,9 @@ package Classes;
 
 import Interfaces.IGameState;
 
+import javax.sound.sampled.*;
+import java.io.File;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Random;
@@ -22,6 +25,8 @@ public class AIGameState implements IGameState {
 
     @Override
     public void startGame() throws InterruptedException {
+        String soundFileOne = "src/sounds/fireball.wav";
+        String soundFileTwo = "src/sounds/fireworks.wav";
         boolean gameOver = false;
         while (!gameOver) {
             System.out.println("Welcome to Rock, Paper, Scissors!");
@@ -36,10 +41,12 @@ public class AIGameState implements IGameState {
                 Scanner scanner = new Scanner(System.in);
                 System.out.println("Player 1, please enter your choice: ");
                 String playerOneChoice = scanner.nextLine().toLowerCase();
+                playSound(soundFileOne);
                 System.out.println("\033[H\033[2J");
                 System.out.flush();
                 Thread.sleep(1000);
                 String playerTwoChoice = getRandomChoice();
+                playSound(soundFileTwo);
                 /*
                 //TODO: implement the logic for the ai portion of the game simple number generator
                 //TODO: should return a random value from the arraylist of choices based on the random number
@@ -137,5 +144,24 @@ public class AIGameState implements IGameState {
 
     public Player getAIPlayer(){
         return _aiPlayer;
+    }
+    public static synchronized void playSound(final String soundFile){
+        new Thread(new Runnable() {
+            File file = new File(soundFile);
+            public void run() {
+                try {
+                    AudioInputStream audioInputStream = AudioSystem.getAudioInputStream(file);
+                    Clip clip = AudioSystem.getClip();
+                    clip.open(audioInputStream);
+                    clip.start();
+                } catch (LineUnavailableException e) {
+                    e.printStackTrace();
+                } catch (UnsupportedAudioFileException e) {
+                    e.printStackTrace();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
+        }).start();
     }
 }
