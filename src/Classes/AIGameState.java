@@ -134,4 +134,8 @@ public class AIGameState implements IGameState {
         int randomNumber = random.nextInt(3);
         return Choices.get(randomNumber);
     }
+
+    public Player getAIPlayer(){
+        return _aiPlayer;
+    }
 }

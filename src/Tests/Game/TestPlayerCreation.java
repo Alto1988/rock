@@ -1,15 +1,20 @@
 package Tests.Game;
 
+import Classes.AIGameState;
 import Classes.GameState;
 import Classes.Player;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
+import javax.swing.text.html.Option;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Optional;
+import java.util.OptionalInt;
 
 
 public class TestPlayerCreation {
+    //BEGINNING OF THE TEST FOR THE HUMAN VS HUMAN PORTION OF THE GAME
     @Test
     public void isPlayerCreated() {
         Player testPlayer = new Player();
@@ -56,4 +61,44 @@ public class TestPlayerCreation {
             testGameState.gameRockPaperScissorsLogic(player1, player2, "rock", "paper");
         });
     }
+    //END OF THE TEST FOR THE HUMAN VS HUMAN PORTION OF THE GAME
+
+    //BEGINNING OF THE TEST FOR THE HUMAN VS AI PORTION OF THE GAME
+    @Test
+    public void testGameCanStartWithOnePlayer(){
+        Player humanPlayer = new Player();
+        AIGameState testGameState = new AIGameState(humanPlayer);
+        Assertions.assertNotNull(testGameState);
+    }
+
+    @Test
+    public void testAIPlayerIsUniqueToGameStateClass() {
+        AIGameState testGameState = new AIGameState(new Player());
+        AIGameState anotherGameState = new AIGameState(new Player());
+
+        Optional<AIGameState> testOptional = Optional.of(testGameState);
+        Optional<AIGameState> anotherOptional = Optional.of(anotherGameState);
+
+        boolean isPresent = testOptional.filter(gameState -> gameState.getAIPlayer() != null).isPresent();
+        boolean isPresent2 = anotherOptional.filter(gameState -> gameState.getAIPlayer() != null).isPresent();
+
+
+        Assertions.assertNotEquals(testGameState.getAIPlayer().hashCode(), anotherGameState.getAIPlayer().hashCode());
+        Assertions.assertTrue(isPresent);
+        Assertions.assertTrue(isPresent2);
+        Assertions.assertNotNull(testGameState.getAIPlayer());
+
+    }
+
+    @Test
+    public void gameStateCrashDoesAI()throws InterruptedException {
+        Player player1 = new Player();
+
+        AIGameState testGameState = new AIGameState(player1);
+        Assertions.assertThrows(NullPointerException.class, () -> {
+            testGameState.gameRockPaperScissorsLogic(player1, null, "rock", "paper");
+        });
+    }
+
+    //END OF THE TEST FOR THE HUMAN VS AI PORTION OF THE GAME
 }
