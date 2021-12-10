@@ -24,34 +24,37 @@ public class Main {
                     break;
                 else if(playerTwoChoice.equals("paper")){
                     playerTwo.updateScore();
+                    playerTwo.setWins("win");
                     break;
                 }else {
                     playerOne.updateScore();
+                    playerOne.setWins("win");
                 }
                 break;
                 case "paper":
                     if(playerTwoChoice.equals("paper"))break;
                     else if (playerTwoChoice.equals("scissors")){
                         playerTwo.updateScore();
+                        playerTwo.setWins("win");
                         break;
                     }else {
                         playerOne.updateScore();
+                        playerOne.setWins("win");
                     }
                     break;
                     case "scissors":
                         if(playerTwoChoice.equals("scissors"))break;
                         else if(playerTwoChoice.equals("rock")){
                             playerTwo.updateScore();
+                            playerTwo.setWins("win");
                             break;
                         }else {
                             playerOne.updateScore();
+                            playerOne.setWins("win");
                             break;
                         }
 
         }
-
-        System.out.println("Player One score is " + playerOne.getScore());
-        System.out.println("Player Two score is " + playerTwo.getScore());
     }
 
 
@@ -62,6 +65,8 @@ public class Main {
         Player playerOne = new Player();
         Player playerTwo = new Player();
 
+        /*
+        * When you get back try and move all this shit into the gamestate class but just the event loop*/
 
         Scanner howManyPlayers = new Scanner(System.in);
         while(!choiceIsValid){
@@ -129,6 +134,8 @@ public class Main {
                         //We start the game
                     }else if(startMenuChoice.equals(MenuChoices.history.toString())){
                         //display the history of the game
+                        playerOne.getResults().forEach(value -> System.out.println("Player 1: " + value));
+                        playerTwo.getResults().forEach(value -> System.out.println("Player 2: " + value));
                     }else if(startMenuChoice.equals(MenuChoices.quit.toString())){
                         gameOver = true;
                     }

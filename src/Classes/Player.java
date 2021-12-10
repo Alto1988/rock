@@ -23,4 +23,7 @@ public class Player {
     public String getName(){
         return this.getClass().getSimpleName();
     }
+    public List<String> getResults(){
+        return _results;
+    }
 }
