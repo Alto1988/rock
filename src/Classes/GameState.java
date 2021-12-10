@@ -54,8 +54,8 @@ public class GameState implements IGameState {
                 }else {
                     playerOne.updateScore();
                     System.out.println("==========================================================");
-                    playerOne.setWins("win");
                     System.out.println("Player One wins!");
+                    playerOne.setWins("win");
                     System.out.println("==========================================================");
                 }
                 break;
@@ -111,10 +111,11 @@ public class GameState implements IGameState {
                         Scanner scanner = new Scanner(System.in);
                         System.out.println("Player 1, please enter your choice: ");
                         String playerOneChoice = scanner.nextLine().toLowerCase();
-                        System.out.println("Player 2, please enter your choice: ");
-                        String playerTwoChoice = scanner.nextLine().toLowerCase();
                         System.out.println("\033[H\033[2J");
                         System.out.flush();
+                        Thread.sleep(1000);
+                        System.out.println("Player 2, please enter your choice: ");
+                        String playerTwoChoice = scanner.nextLine().toLowerCase();
                         try {
                             if(Choices.contains(playerOneChoice) && Choices.contains(playerTwoChoice)){
 

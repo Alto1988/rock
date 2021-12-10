@@ -4,6 +4,7 @@ import Interfaces.IGameState;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Random;
 import java.util.Scanner;
 
 public class AIGameState implements IGameState {
@@ -35,6 +36,8 @@ public class AIGameState implements IGameState {
                 Scanner scanner = new Scanner(System.in);
                 System.out.println("Player 1, please enter your choice: ");
                 String playerOneChoice = scanner.nextLine().toLowerCase();
+                System.out.println("\033[H\033[2J");
+                System.out.flush();
                 Thread.sleep(1000);
                 String playerTwoChoice = getRandomChoice();
                 /*
@@ -127,7 +130,8 @@ public class AIGameState implements IGameState {
     }
 
     private String getRandomChoice(){
-        int randomNumber = (int) (Math.random() * Choices.size());
+        Random random = new Random();
+        int randomNumber = random.nextInt(3);
         return Choices.get(randomNumber);
     }
 }
